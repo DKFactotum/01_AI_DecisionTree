@@ -1,0 +1,30 @@
+Daniil Koshelyuk exercise on AI: Decision trees led by WelchLabs.
+
+                                        THEORY
+
+Steps:
+
+0. Small size area sampling around the pixel to evaluate the task;
+1. Simplify the problem with threshold;
+2. Too specific -> more rules;
+3. Evaluation: confusion matrix
+        yes no
+    yes  +   -
+    no   -   +
+    Difference between false positive and false negatives - important to track and distinguish the two.
+4.
+
+
+History of AI:
+
+- Rene Descartes (1596-1650):
+                                          Automata as core of any animal (cogs, pistons and camps).
+- Gottfried Wilhelm Leibniz (1646-1716):
+                                          Systematization of arguments by reduction to a specific number.
+    + transistors
+- Alan Turing (1912-1954):
+                                          Mathematical logic -> Computer Program (but there is a limit to math logic)
+                                          NB! Reference: 1950 Computing Machinery and Intelligence
+- Marvin Minsky (1927-2016) + Gerald Sussman (1947-) - computer distinguishing images.
+                                          Common ground between Computer Vision and Lot's of other problems (like play board games, avoid car crashes in self-driving cars, data mining, predict heart disease, detect bank fraud etc.)
+- Helbert Simon (1916-2001)
