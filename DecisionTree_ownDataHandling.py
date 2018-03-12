@@ -16,6 +16,8 @@ from time import sleep
 from datetime import datetime as dt
 from copy import deepcopy
 
+############################# General Functions ################################
+
 def remap(value, oldRange0, oldRange1, newRange0, newRange1):
     return (value - oldRange0) * (newRange1 - newRange0) / (oldRange1 - oldRange0)
 
