@@ -12,8 +12,26 @@ Steps:
     yes  +   -
     no   -   +
     Difference between false positive and false negatives - important to track and distinguish the two.
-4.
-
+    NB! Importance: heart attack detection: false positive and false negative!!!
+    But to be comparable to other rules and approaches there has to be a metrics and the choice matters a lot:
+        - Accuracy  - all true positive and true negative divided by total population.
+                      (Problem - if positive account for small percent of population - not classifying at all is accurate enough).
+        - Recall    - the portion of all correctly identified elements to all true elements.
+        - Precision - the portion of all predictions that are correct to all predicted elements.
+        - NB! Reference: wiki page confusion matrix - other types of metrics on confusion matrix.
+4. Expert system strengths:
+    - Configuring computer systems;
+    - Solving logical problems;
+    - Playing chess;
+    - Inferring structure of chemicals;
+    - Proving math theorems;
+    - Diagnosing problems in nuclear reactors,
+    - Space shuttle mission control;
+    - Detecting submarines in sonar data.
+    All types requiring complex abstract reasoning - requiring experts and hard for people.
+    Knowledge engineering has a limit - computational power is simply never as good as our neural system at certain tasks. Not to mention we don't really know how is it that it does things.
+5. Machine Learning
+    - Approach 1: let the examples be the rules.
 
 History of AI:
 
@@ -25,6 +43,26 @@ History of AI:
 - Alan Turing (1912-1954):
                                           Mathematical logic -> Computer Program (but there is a limit to math logic)
                                           NB! Reference: 1950 Computing Machinery and Intelligence
-- Marvin Minsky (1927-2016) + Gerald Sussman (1947-) - computer distinguishing images.
+- 1966 Marvin Minsky (1927-2016) + Gerald Sussman (1947-) - computer distinguishing images.
                                           Common ground between Computer Vision and Lot's of other problems (like play board games, avoid car crashes in self-driving cars, data mining, predict heart disease, detect bank fraud etc.)
-- Helbert Simon (1916-2001)
+- Herbert Simon (1916-2001)
+- AI winter for 20 years (60s-80s) cut down on research and funding.
+- Digital Equipment Corporation (DEC) - computer manufacturer with a problem:
+                                          Selling computer parts separately for very complicated on it's own system. Thus often customers often ended up with useless parts and needed a special expert just to buy a computer. Problem for training sales-people. To address it they invited John McDermott - developed a special system to cut down on losses.
+                                          Solution: Take expert's knowledge and turn it into a code: knowledge engineering system R1 (problem tedious and even experts can disagree on optimal solution).
+                                          Soon a lot of companies began spending money to implement AI solutions (over 1b$ by ~1990). Demand for experts outgrew supply.
+                                          But by late 80s boom ended - expert systems become less and less demanded. Problem - this type of system is very closely tied to the conditions and is not flexible. Piles of Rules are hard to maintain and correct - easier to rewrite if something changes. For example, by 1987 DEC system had 10000 rules and over person-century of time invested (100 * 365 * 24 = 876000 hours).
+                                          But supposition that hard problems for people would be hard for machines and vise versa.
+                                          Thus attempts on "easy problems" failed miserably:
+                                          - Recognizing faces;
+                                          - Walking across a room;
+                                          - Counting fingers on images;
+                                          - Driving a car.
+NB! Reference: Steven Pinker - "The Language Instinct"
+- Moravec's paradox - exactly that - easy problems are hard, hard problems are easy - as a result of misunderstanding what Intelligence is.
+
+Meanwhile a new approach developed in parallel:
+- 1940s Arthur Samuel (1901-1990) - computer program to play checkers.
+                                          Spare time on IBM701 (0.000001 GHz).
+                                          He didn't write to play checkers but wrote to learn to play checkers - machine learning.
+                                          Idea is instead of writing rules on our own - let the code search for it.

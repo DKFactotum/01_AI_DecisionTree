@@ -63,7 +63,7 @@ def arrangeToNumpy(frames):
     return image_convert
 # Save Numpy Images
 def storeNumpyText(image_convert):
-    path = "Pictures//"
+    path = "02_pictures//"
     i = 0
     for image in image_convert:
         np.savetxt(path + "frame" + str(i) + ".data", image)
@@ -75,8 +75,8 @@ def storeNumpyText(image_convert):
 
 ############################## Database Reading ################################
 # Read Captured oimages data.
-def read():
-    path = "Pictures//"
+def readNumpyText():
+    path = "02_pictures//"
     filenames = []
     for filename in os.listdir(path):
         if filename.endswith(".data"):
