@@ -32,6 +32,51 @@ Steps:
     Knowledge engineering has a limit - computational power is simply never as good as our neural system at certain tasks. Not to mention we don't really know how is it that it does things.
 5. Machine Learning
     - Approach 1: let the examples be the rules.
+                  Problem: memorizing is not same as learning. Learning - generalizing.
+                  Usually dataset is incomparably big - no way to actually extend data to every possible one. Sampling on super-tiny subset raises a question how do we distinguish wrong rules from right - there are much more rules that fit the data than that are right?
+                  Address the issue: equally voting from all possible rules. Problem than all the options are equally likely to be right.
+                  Answer - there is not enough information to extended our knowledge from data alone to get the rules.
+    - Futility of Bias-Free Learning & Computational Learning Theory:
+                  Add assumptions to the game.
+                  For humans learning is about distinguishing meaningful patterns and ignoring the rest rather than retaining information - not perfect though.
+                  What if the shortcomings of Human learning is actually a key to make learning possible at all: not always get it right, assume we can ignore stuff.
+                  NB! Important to have randomized training dataset and NB! not based on a specific assumed rule - rather over all possible rules. The problem is that probability of simply stumbling upon a rule exactly fitting training data is very high. Rule's ability to generalize depend on seemingly unrelated variable - number of rules we try out on the training data.
+                  Assume the rule will be simple -> less rules to go through -> more likely to generalize. Thus the question is in how much complexity do we need to introduce.
+                  Computational Learning Theory:
+                  - VC theory - quantitative;
+                      NB! Reference: Yaser Abu-Mostafa, Malik Magdon-Ismail, Hsuan-Tien Lin "Learning from data"
+                  - Probably Approximately Correct Theory - qualitative.
+                      NB! Reference: Leslie Valiant "Probably Approximately Correct"
+
+                  Thus there are two fundamentally opposed goals in Machine Learning:
+                  - fit training data;
+                  - generalize.
+
+                  More Bias - simpler but more generalized.
+                  More Variance - more complex and more specific to the training to data.
+                  The problems too much bias - underfitting, too much variance - overfitting.
+
+                  Suggested approach - start from high bias and gradually crank up the complexity.
+                  Problem - intractability - inability to scale well.
+                  The fact that a problem is theoretically solvable by computer - doesn't necessarily mean that computer has enough means to do so.
+
+    - Two types of problems:
+          + class P: time (or memory) increases in polynomial function with respect to complexity:
+                  LSOLVE, STCONN, LP, SORT, PLANARITY, GCD, DIOPHANTINE
+          + class NP: time (or memory) increases exponentially with respect to complexity:
+                  CLIQUE, TRAVELLING SALESMAN, COSINE INTEGRAL, GENERALIZED GO, GENERALIZED CHESS, PARTITION, PROTEIN FOLDING, SAT, TETRIS, SUBSET SUM
+          Proving P is not equal to NP is still not done though (millennial problem).
+
+          Select branch by searching for minimal amount of misclassifications.
+          Problem: imbalance between positive and negative examples -> equal number of total mistakes.
+          Explanation either all examples are bad, or we select the rule in a wrong way - look for performance with respect to the type (positive or negative) - measure impurity;
+          Solution: introduce heuristic - a method to measure impurity of given selections.
+            - weighted average - same equally bad way to select. Reason: the impurity measure is linear and thus the impurity of division is equal to impurity of original. From the behavior we look for (function of the sum >= sum of the functions) hints for new heuristic
+            - concede function curving downwards:
+                  + Gini impurity: parabola;
+                  + Information gain with respect to Shannon Entropy of splits (aka Kullback-Leibler divergence, Relative entropy, Mutual information)
+                      NB! Reference: Claude E. Shannon "The mathematical theory of communication"
+                  NB! Choice of heuristics matters a lot for performance but it is still a guess - no clear reasons why one is better than the other.
 
 History of AI:
 
@@ -43,10 +88,10 @@ History of AI:
 - Alan Turing (1912-1954):
                                           Mathematical logic -> Computer Program (but there is a limit to math logic)
                                           NB! Reference: 1950 Computing Machinery and Intelligence
-- 1966 Marvin Minsky (1927-2016) + Gerald Sussman (1947-) - computer distinguishing images.
+- 1966: Marvin Minsky (1927-2016) + Gerald Sussman (1947-) - computer distinguishing images.
                                           Common ground between Computer Vision and Lot's of other problems (like play board games, avoid car crashes in self-driving cars, data mining, predict heart disease, detect bank fraud etc.)
 - Herbert Simon (1916-2001)
-- AI winter for 20 years (60s-80s) cut down on research and funding.
+- AI winter for 20 years (74-80s) cut down on research and funding.
 - Digital Equipment Corporation (DEC) - computer manufacturer with a problem:
                                           Selling computer parts separately for very complicated on it's own system. Thus often customers often ended up with useless parts and needed a special expert just to buy a computer. Problem for training sales-people. To address it they invited John McDermott - developed a special system to cut down on losses.
                                           Solution: Take expert's knowledge and turn it into a code: knowledge engineering system R1 (problem tedious and even experts can disagree on optimal solution).
@@ -62,7 +107,14 @@ NB! Reference: Steven Pinker - "The Language Instinct"
 - Moravec's paradox - exactly that - easy problems are hard, hard problems are easy - as a result of misunderstanding what Intelligence is.
 
 Meanwhile a new approach developed in parallel:
-- 1940s Arthur Samuel (1901-1990) - computer program to play checkers.
+- 1940s: Arthur Samuel (1901-1990) -  IBM researcher computer program to play checkers.
                                           Spare time on IBM701 (0.000001 GHz).
                                           He didn't write to play checkers but wrote to learn to play checkers - machine learning.
                                           Idea is instead of writing rules on our own - let the code search for it.
+- The problem of intractability also contributed to AI Winter
+- 1970-80s: Ross Quinlan (1943 -) in Machine Learning parallel to Leo Breiman (1928-2005), Jerome H. Friedman (1939-) in Statistics
+                                          NB! Reference: Cristopher Moore & Stephan Mertens - "The nature of Computation"
+                                          NB! Reference: https://www.youtube.com/watch?v=YX40hbAHx3s
+                                          The change comes when realizing that top options for most optimized rules are all more or less equal especially considering unevenness of test sample selection.
+                                          Thus the greedy approach is to as the selection of rules branches - cut off the less well performing branches instead of checking them all.
+                                          Benefit of these binary trees is also if each branch ends in positive we basically test for multiple rules.

@@ -150,7 +150,7 @@ rwb = make_colormap([c('red'), c('red'), 0.33, (1,1,1), (1,1,1), 0.66, c('blue')
 
 ####################### Decision Tree Functionality ############################
 # Compute confusion matrix.                                              #TESTED
-def computeConfusionMatrix(answers, detection, datails=True):
+def computeConfusionMatrix(answers, detection, details=True):
     # Make sure data is 1d, not 2d numpy arrays.
     if (answers.ndim == 2):      answers = answers[:,0]
     if (detection.ndim == 2):    detection = detection[:,0]
@@ -167,7 +167,7 @@ def computeConfusionMatrix(answers, detection, datails=True):
     else:               precision = 0
     accuracy = float(TP + TN) / len(answers)
 
-    if (datails):
+    if (details):
         print 'Confusion Matrix:'
         print confusionMatrix
         print 'Recall (TPR) = '     + str(round(recall, 3))     + \
@@ -178,7 +178,7 @@ def computeConfusionMatrix(answers, detection, datails=True):
 
     return confusionMatrix, accuracy, recall, precision
 # Test simple rules.                                                     #TESTED
-def testSimpleRules(rules, examplesIndicies, data, figure, datails=True):
+def testSimpleRules(rules, examplesIndicies, data, figure, details=True):
     for i in range(len(examplesIndicies)):
         subplot             = figure.add_subplot(1, len(examplesIndicies), i + 1)
         imageDict           = data[examplesIndicies[i]]
@@ -198,58 +198,52 @@ def testSimpleRules(rules, examplesIndicies, data, figure, datails=True):
         image[:,:,2][matchImage==1] = 0
         subplot.imshow(image, interpolation = 'none')
         subplot.axis('off')
-        if (datails):
+        if (details):
         	plt.title('Number of Matches = ' + str(sum(matchVec == 1)), fontsize=14)
-# # Test logical rules.
-# def testLogicalRules(examplesIndicies, data, figure, examples, answers, rule, showLegend=True):
-#     for i in range(len(examplesIndicies)):
-#         subplot             = figure.add_subplot(1, 4, i + 1)
-#         imageDict           = data[examplesIndicies[i]]
-#         examplesFeatures, answersFeatures = extractFeatures(imageDict, imageType='image1bit', pixelOffset=4)
-#         image               = grayscale(imageDict)
-#         yImage              = answersFeatures.reshape(imageDict['boxHeight'], imageDict['boxWidth'])
-#
-#         # Perform the rule.
-#         detection           = rule(examplesFeatures)
-#         truePositives       = np.logical_and(answersFeatures, detection)
-#         falsePositives      = np.logical_and(np.logical_not(answersFeatures), detection)
-#
-#         # Colour true positives.
-#         ## Paint with matches:
-#         image[:,:,0][yImage==1] = 1
-#         image[:,:,1][yImage==1] = 1
-#         image[:,:,2][yImage==1] = 0
-#
-#         # Colour true positives.
-#         tPImage = truePositives.reshape((imageDict['boxHeight'], imageDict['boxWidth']))
-#         ## Paint with matches:
-#         image[:,:,0][tPImage==1] = 0
-#         image[:,:,1][tPImage==1] = 1
-#
-#         image[:,:,2][tPImage==1] = 0
-#         # Colour false positives.
-#         fNImage = falsePositives.reshape((imageDict['boxHeight'], imageDict['boxWidth']))
-#         ## Paint with matches:
-#         image[:,:,0][fNImage==1] = 1
-#         image[:,:,1][fNImage==1] = 0
-#         image[:,:,2][fNImage==1] = 0
-#
-#         # Plot the image.
-#         subplot.imshow(image, interpolation = 'none')
-#         subplot.axis('off')
-#     if (showLegend):
-#         legend = Image.open('01_images/legendOne.png', 'r')
-#         legend = figure.add_subplot(1, len(examplesIndicies) + 1, len(examplesIndicies) + 1)
-#         legend.imshow(legend)
-#         legend.axis('off');
-#     detection = rule(examples)
-#     confusionMatrix, accuracy, recall, precision = computeConfusionMatrix(answers, detection, datails=True)
-
+# Test logical rules.
+def testLogicalRules(rule, examplesIndicies, data, figure, examples, answers, showLegend=True):
+    for i in range(len(examplesIndicies)):
+        subplot             = figure.add_subplot(1, len(examplesIndicies) + 1, i + 1)
+        imageDict           = data[examplesIndicies[i]]
+        examplesFeatures, answersFeatures = extractFeatures(imageDict, imageType='image1bit', pixelOffset=4)
+        image               = grayscale(imageDict)
+        yImage              = answersFeatures.reshape(imageDict['boxHeight'], imageDict['boxWidth'])
+        # Perform the rule.
+        detection           = rule(examplesFeatures)
+        truePositives       = np.logical_and(answersFeatures, detection)
+        falsePositives      = np.logical_and(np.logical_not(answersFeatures), detection)
+        # Colour true positives.
+        ## Paint with matches:
+        image[:,:,0][yImage==1] = 1
+        image[:,:,1][yImage==1] = 1
+        image[:,:,2][yImage==1] = 0
+        # Colour true positives.
+        tPImage = truePositives.reshape((imageDict['boxHeight'], imageDict['boxWidth']))
+        ## Paint with matches:
+        image[:,:,0][tPImage==1] = 0
+        image[:,:,1][tPImage==1] = 1
+        image[:,:,2][tPImage==1] = 0
+        # Colour false positives.
+        fNImage = falsePositives.reshape((imageDict['boxHeight'], imageDict['boxWidth']))
+        ## Paint with matches:
+        image[:,:,0][fNImage==1] = 1
+        image[:,:,1][fNImage==1] = 0
+        image[:,:,2][fNImage==1] = 0
+        # Plot the image.
+        subplot.imshow(image, interpolation = 'none')
+        subplot.axis('off')
+    if (showLegend):
+        legend = Image.open('01_images/legendOne.png', 'r')
+        legendSubplot = figure.add_subplot(1, len(examplesIndicies) + 1, len(examplesIndicies) + 1)
+        legendSubplot.imshow(legend)
+        legendSubplot.axis('off')
+    # detection = rule(examples)
+    # confusionMatrix, accuracy, recall, precision = computeConfusionMatrix(answers, detection, details=True)
 # Test given rules.                                                      #TESTED
 ## color: Full, Green. #FIXME Not just texting but drawing...
 def testRules(rules, examplesIndicies, data, figure, examples, answers, showLegend=True, color='Full'):
     for i in range(len(examplesIndicies)):
-        subplot         = figure.add_subplot(1, 4, i + 1)
+        subplot         = figure.add_subplot(1, len(examplesIndicies) + 1, i + 1)
         imageDict       = data[examplesIndicies[i]]
         examplesFeatures, answersFeatures = extractFeatures(imageDict, imageType='image1bit', pixelOffset=4)
         image           = grayscale(imageDict)
@@ -306,7 +300,7 @@ def testRules(rules, examplesIndicies, data, figure, examples, answers, showLege
         subplot.axis('off')
     if (showLegend):
         legend = Image.open('01_images/legendOne.png', 'r')
-        legendSubplot = figure.add_subplot(1,4,len(examplesIndicies)+1)
+        legendSubplot = figure.add_subplot(1, len(examplesIndicies) + 1, len(examplesIndicies)+1)
         legendSubplot.imshow(legend)
         legendSubplot.axis('off')
 
@@ -326,7 +320,7 @@ def testRules(rules, examplesIndicies, data, figure, examples, answers, showLege
         matchingIndices = np.where(rules(examples))[0]
     detection = np.zeros(examples.shape[0])
     detection[matchingIndices] = 1
-    confusionMatrix, accuracy, recall, precision = computeConfusionMatrix(answers, detection, datails=False)
+    confusionMatrix, accuracy, recall, precision = computeConfusionMatrix(answers, detection, details=False)
     return detection, confusionMatrix, accuracy, recall, precision
 
 ################################ Display ####################################### #FIXME Clense displays from excersises
@@ -357,7 +351,7 @@ def displayOnePixelArea(pixelArea):
     plt.pcolor(np.flipud(pixelArea), cmap='Greys',  linewidth=.5, color='k', vmin=0, vmax=1)
     plt.show()
 # Display performance of a simple rule.                                  #TESTED
-def displaySimpleRulePerformance(rules, examplesIndicies, data):
+def displaySimpleRulePerformance(rules, examplesIndicies, data, details=True):
     figure = plt.figure(0, (12, 6))
     testSimpleRules(rules=rules, examplesIndicies=examplesIndicies, data=data, figure=figure)
     plt.show()
@@ -424,4 +418,39 @@ def displayPositiveRules(fingerExamples):
         plt.subplot(nr, nc, i + 1)
         plt.pcolor(np.flipud(rule), cmap=colorMap,  linewidth=.5, color=maincolor, vmin=0, vmax=1)
         plt.axis('off')
+    plt.show()
+# Display performance of a simple rule.                                  #TESTED
+def displayLogicalRulePerformance(ruleIndex, examplesIndicies, data):
+    figure = plt.figure(0, (12, 6))
+    for i in range(len(examplesIndicies)):
+        subplot             = figure.add_subplot(1, len(examplesIndicies), i + 1)
+        imageDict           = data[examplesIndicies[i]]
+        examplesFeatures, answersFeatures = extractFeatures(imageDict, imageType='image1bit', pixelOffset=4)
+        image               = grayscale(imageDict)
+        matchIndices = (examplesFeatures[:,ruleIndex]==1)
+        matchImage = matchIndices.reshape(imageDict['boxHeight'], imageDict['boxWidth'])
+        ## Paint with matches:
+        image[:,:,0][matchImage==1] = 0
+        image[:,:,1][matchImage==1] = 1
+        image[:,:,2][matchImage==1] = 0
+        subplot.imshow(image, interpolation = 'none')
+        subplot.axis('off')
+    plt.show()
+# Specific pixel area display.                                           #TESTED
+def displayLogicalRule(rule):
+    sampleWidth = 9
+    pixelArea = np.zeros(sampleWidth * sampleWidth)
+    values = []
+    for i in range(len(rule) / 2):
+        value = rule[len(rule) / 2 + i]
+        if (value == 0): value = -1
+        pixelArea[rule[i]] = value
+    pixelArea = np.reshape(pixelArea, (9, 9))
+    figure = plt.figure(0, (4, 4))
+    plt.pcolor(np.flipud(pixelArea), cmap=rwb,  linewidth=.5)
+    plt.show()
+# Display performance of a simple rule.                                  #TESTED
+def displayLogicalExecutableRulePerformance(rule, examplesIndicies, data, examples, answers):
+    figure = plt.figure(0, (12, 6))
+    testLogicalRules(rule, examplesIndicies, data, figure, examples, answers)
     plt.show()
